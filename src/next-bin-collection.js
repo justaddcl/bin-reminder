@@ -88,7 +88,11 @@ const setServices = async (collections, stack, widget) => {
 
     const { icon } = service;
 
-    if (!isBackgroundSet) {
+    if (
+      !isBackgroundSet &&
+      collections.length > 1 &&
+      service.round !== "FOOD3"
+    ) {
       widget.backgroundColor = new Color(service.color, 0.65);
       isBackgroundSet = true;
     }
