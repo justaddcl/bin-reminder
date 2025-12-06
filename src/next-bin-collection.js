@@ -110,8 +110,6 @@ const setServices = async (collections, stack, widget) => {
 };
 
 const createWidget = async (collectionsData) => {
-  console.log(JSON.stringify(collectionsData, null, 2));
-
   const { collections } = collectionsData;
 
   const sortedCollections = collections.sort((collectionA, collectionB) => {
@@ -172,8 +170,6 @@ const createWidget = async (collectionsData) => {
   servicesHStack.layoutHorizontally();
   servicesHStack.centerAlignContent();
   servicesHStack.spacing = 24;
-
-  console.log(JSON.stringify(firstCollections, null, 2));
 
   await setServices(firstCollections, servicesHStack, widget);
 
