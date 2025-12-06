@@ -113,6 +113,13 @@ const setServices = async (collections, stack, widget) => {
   }
 };
 
+const sortRounds = (collections) =>
+  collections.sort((a, b) => {
+    if (a.round === "FOOD3") return 1; // push FOOD3 later
+    if (b.round === "FOOD3") return -1; // pull other items earlier
+    return 0; // otherwise unchanged
+  });
+
 const createWidget = async (collectionsData) => {
   const { collections } = collectionsData;
 
@@ -126,6 +133,8 @@ const createWidget = async (collectionsData) => {
   const firstCollections = sortedCollections.filter(
     (collection) => collection.date === firstCollectionDate
   );
+
+  const sortedFirstCollections = sortRounds(firstCollections);
 
   const dateFormatter = new DateFormatter();
   dateFormatter.locale = "en";
@@ -155,7 +164,7 @@ const createWidget = async (collectionsData) => {
   dateHStack.layoutVertically();
 
   const formattedCollectionDay = dayFormatter.string(
-    parseDate(firstCollections[0].date)
+    parseDate(sortedFirstCollections[0].date)
   );
   const collectionDay = dateHStack.addText(formattedCollectionDay);
   collectionDay.font = Font.boldSystemFont(24);
@@ -175,7 +184,7 @@ const createWidget = async (collectionsData) => {
   servicesHStack.centerAlignContent();
   servicesHStack.spacing = 24;
 
-  await setServices(firstCollections, servicesHStack, widget);
+  await setServices(sortedFirstCollections, servicesHStack, widget);
 
   widget.addSpacer();
 
